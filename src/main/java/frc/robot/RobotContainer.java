@@ -24,7 +24,7 @@ public class RobotContainer {
 
     private void configureBindings() {
         /* Default command is duty cycle control with the left up/down stick */
-        m_mechanism.setDefaultCommand(m_mechanism.joystickDriveCommand(m_joystick::getLeftY));
+        //m_mechanism.setDefaultCommand(m_mechanism.joystickDriveCommand(m_joystick::getLeftY));
 
         /**
          * Joystick Y = quasistatic forward
@@ -40,7 +40,7 @@ public class RobotContainer {
 
         /* Manually stop logging with left bumper after we're done with the tests */
         /* This isn't necessary, but is convenient to reduce the size of the hoot file */
-        m_joystick.leftBumper().onTrue(new RunCommand(SignalLogger::stop));
+        //m_joystick.leftBumper().onTrue(new RunCommand(SignalLogger::stop));
     }
 
     public Command getAutonomousCommand() {
