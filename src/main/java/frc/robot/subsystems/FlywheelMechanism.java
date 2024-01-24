@@ -1,15 +1,19 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Volts;
+import static edu.wpi.first.units.Units.Seconds;
 
+import java.sql.Time;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Measure;
@@ -31,7 +35,7 @@ public class FlywheelMechanism extends SubsystemBase {
             new SysIdRoutine.Config(
                 null,         // Default ramp rate is acceptable
                 Volts.of(4), // Reduce dynamic voltage to 4 to prevent motor brownout
-                null,          // Default timeout is acceptable
+                Seconds.of(5),          // Default timeout is acceptable
                                        // Log state with Phoenix SignalLogger class
                 (state) -> SignalLogger.writeString("state", state.toString())),
             new SysIdRoutine.Mechanism(
@@ -48,14 +52,19 @@ public class FlywheelMechanism extends SubsystemBase {
         setName("Flywheel");
 
         TalonFXConfiguration cfg = new TalonFXConfiguration();
+        TalonFXConfiguration cfg_inverted = new TalonFXConfiguration();
+
         cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        front_right.getConfigurator().apply(cfg);
+        cfg_inverted.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        cfg_inverted.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        
+        front_right.getConfigurator().apply(cfg_inverted);
         front_left.getConfigurator().apply(cfg);
-        back_right.getConfigurator().apply(cfg);
+        back_right.getConfigurator().apply(cfg_inverted);
         back_left.getConfigurator().apply(cfg);
 
         /* Speed up signals for better charaterization data */
-        BaseStatusSignal.setUpdateFrequencyForAll(50,
+        BaseStatusSignal.setUpdateFrequencyForAll(250,
             front_right.getPosition(),
             front_right.getVelocity(),
             front_right.getMotorVoltage());
