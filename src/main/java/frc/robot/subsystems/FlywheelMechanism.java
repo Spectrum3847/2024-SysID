@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.units.Measure;
 import edu.wpi.first.units.Voltage;
@@ -23,7 +24,6 @@ public class FlywheelMechanism extends SubsystemBase {
     private final TalonFX front_left = new TalonFX(Constants.front_left_ID, Constants.CANBUS);
     private final TalonFX back_right = new TalonFX(Constants.back_right_ID, Constants.CANBUS);
     private final TalonFX back_left = new TalonFX(Constants.back_left_ID, Constants.CANBUS);
-    private final DutyCycleOut m_joystickControl = new DutyCycleOut(0);
     private final VoltageOut m_sysidControl = new VoltageOut(0);
 
     private SysIdRoutine m_SysIdRoutine =
@@ -47,26 +47,21 @@ public class FlywheelMechanism extends SubsystemBase {
     public FlywheelMechanism() {
         setName("Flywheel");
 
-        // TalonFXConfiguration cfg = new TalonFXConfiguration();
-        // m_motorToTest.getConfigurator().apply(cfg);
+        TalonFXConfiguration cfg = new TalonFXConfiguration();
+        cfg.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        front_right.getConfigurator().apply(cfg);
+        front_left.getConfigurator().apply(cfg);
+        back_right.getConfigurator().apply(cfg);
+        back_left.getConfigurator().apply(cfg);
 
         /* Speed up signals for better charaterization data */
-        BaseStatusSignal.setUpdateFrequencyForAll(250,
+        BaseStatusSignal.setUpdateFrequencyForAll(50,
             front_right.getPosition(),
             front_right.getVelocity(),
-            front_right.getMotorVoltage(),
-            front_left.getPosition(),
-            front_left.getVelocity(),
-            front_left.getMotorVoltage(),
-            back_right.getPosition(),
-            back_right.getVelocity(),
-            back_right.getMotorVoltage(),
-            back_left.getPosition(),
-            back_left.getVelocity(),
-            back_left.getMotorVoltage());
+            front_right.getMotorVoltage());
 
         /* Optimize out the  other signals, since they're not particularly helpful for us */
-        //m_motorToTest.optimizeBusUtilization();
+        front_right.optimizeBusUtilization();
     }
 
     // public Command joystickDriveCommand(DoubleSupplier output) {

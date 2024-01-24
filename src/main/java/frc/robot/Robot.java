@@ -41,9 +41,8 @@ if (isReal()) {
 // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
 Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
     SignalLogger.setPath("/media/sda1/");
-    SignalLogger.enableAutoLogging(true);
+    //SignalLogger.enableAutoLogging(true);
     m_robotContainer = new RobotContainer();
-    
   }
 
   @Override
