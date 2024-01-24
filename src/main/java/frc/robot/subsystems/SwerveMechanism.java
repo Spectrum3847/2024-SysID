@@ -3,14 +3,9 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.Volts;
 import static edu.wpi.first.units.Units.Seconds;
 
-import java.sql.Time;
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -23,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
-public class FlywheelMechanism extends SubsystemBase {
+public class SwerveMechanism extends SubsystemBase {
     private final TalonFX front_right = new TalonFX(Constants.front_right_ID, Constants.CANBUS);
     private final TalonFX front_left = new TalonFX(Constants.front_left_ID, Constants.CANBUS);
     private final TalonFX back_right = new TalonFX(Constants.back_right_ID, Constants.CANBUS);
@@ -48,8 +43,8 @@ public class FlywheelMechanism extends SubsystemBase {
                 null,
                 this));
 
-    public FlywheelMechanism() {
-        setName("Flywheel");
+    public SwerveMechanism() {
+        setName("Swerve");
 
         TalonFXConfiguration cfg = new TalonFXConfiguration();
         TalonFXConfiguration cfg_inverted = new TalonFXConfiguration();
