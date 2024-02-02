@@ -6,7 +6,10 @@ import static edu.wpi.first.units.Units.Seconds;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
+import edu.wpi.first.units.Velocity;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -23,13 +26,14 @@ public class SwerveMechanism extends SubsystemBase {
     private final TalonFX front_left = new TalonFX(Constants.front_left_ID, Constants.CANBUS);
     private final TalonFX back_right = new TalonFX(Constants.back_right_ID, Constants.CANBUS);
     private final TalonFX back_left = new TalonFX(Constants.back_left_ID, Constants.CANBUS);
-    private final VoltageOut m_sysidControl = new VoltageOut(0);
+    //private final VoltageOut m_sysidControl = new VoltageOut(0);
+    private TorqueCurrentFOC m_sysidControl = new TorqueCurrentFOC(0);
 
     private SysIdRoutine m_SysIdRoutine =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                null,         // Default ramp rate is acceptable
-                Volts.of(4), // Reduce dynamic voltage to 4 to prevent motor brownout
+                Volts.of(1).per(Seconds.of(0.5)),         // Default ramp rate is acceptable
+                Volts.of(5), // Reduce dynamic voltage to 4 to prevent motor brownout
                 Seconds.of(5),          // Default timeout is acceptable
                                        // Log state with Phoenix SignalLogger class
                 (state) -> SignalLogger.writeString("state", state.toString())),
