@@ -33,7 +33,7 @@ public class SwerveMechanism extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 Volts.of(1).per(Seconds.of(0.5)),         // Default ramp rate is acceptable
-                Volts.of(5), // Reduce dynamic voltage to 4 to prevent motor brownout
+                Volts.of(10), // Reduce dynamic voltage to 4 to prevent motor brownout
                 Seconds.of(5),          // Default timeout is acceptable
                                        // Log state with Phoenix SignalLogger class
                 (state) -> SignalLogger.writeString("state", state.toString())),
